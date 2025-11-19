@@ -1,24 +1,18 @@
 package com.mail.demo.controllers;
 
+import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+@Getter
 class Templogin{
     private String email;
     private String password;
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
@@ -45,8 +39,12 @@ public class EntryController {
         return edge.validateFullPassword(a.getPassword(),a.getEmail());
 
     }
+    @GetMapping("/")
+    public String login(){
+        return "login";
+    }
     @PostMapping ("/login")
-    public String loginlist(@RequestBody Templogin temp){
+    public String loginlist(@ModelAttribute Templogin temp){
         boolean vaildPassword=false;
         for(User u : userArrayList){
             if(u.getEmail().equals(temp.getEmail()) && u.getPassword().equals(temp.getPassword()) ){
