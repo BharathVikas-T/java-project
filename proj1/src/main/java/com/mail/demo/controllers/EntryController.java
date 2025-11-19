@@ -2,6 +2,7 @@ package com.mail.demo.controllers;
 
 import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,16 +44,25 @@ public class EntryController {
     public String login(){
         return "login.html";
     }
-    @PostMapping ("/login")
-    public String loginlist(@ModelAttribute Templogin temp){
+    public String loginlist(@ModelAttribute Templogin temp, RedirectAttributes redirectAttributes){
         boolean vaildPassword=false;
         for(User u : userArrayList){
             if(u.getEmail().equals(temp.getEmail()) && u.getPassword().equals(temp.getPassword()) ){
                 vaildPassword=true;
+                break; // Exit loop once user is found
             }
         }
-        if(vaildPassword)return "Login successful...";
-        return "Login failed mail id or password is incorrect ";
+
+        if(vaildPassword){
+            // 1. Success: Redirect to a new welcome page
+            return "redirect:/welcome/success";
+        } else {
+            // 2. Failure: Add error message to be carried over the redirect
+            redirectAttributes.addFlashAttribute("loginError",
+                    "Login failed: Mail ID or password is incorrect.");
+            // 3. Redirect back to the GET mapping for the login page (i.e., /welcome/)
+            return "redirect:/welcome/";
+        }
     }
 
 
