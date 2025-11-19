@@ -41,7 +41,7 @@ public class EntryController {
     }
     @GetMapping("/")
     public String login(){
-        return "login";
+        return "login.html";
     }
     @PostMapping ("/login")
     public String loginlist(@ModelAttribute Templogin temp){
